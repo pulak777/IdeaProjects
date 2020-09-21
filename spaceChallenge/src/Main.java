@@ -7,8 +7,17 @@ public class Main {
     public static void main(String[] args) throws Exception{
         // write your code here
         Simulation sim1 = new Simulation("phase-1.txt");
-        ArrayList<U1> rockets = sim1.loadU1();
-        System.out.println(sim1.runSimulationU1(rockets));
+        ArrayList<U1> rockets1 = sim1.loadU1();
+        System.out.println("For rocket U1");
+        for(int i = 0; i < 10; i++){
+            System.out.println(sim1.runSimulationU1(rockets1));
+        }
+        ArrayList<U2> rockets2 = sim1.loadU2();
+        System.out.println("For rocket U2");
+        for(int i = 0; i < 10; i++){
+            System.out.println(sim1.runSimulationU2(rockets2));
+        }
+
     }
 }
 class Item {
@@ -21,47 +30,48 @@ class Item {
 }
 
 class U1 extends Rocket{
-    public U1(int cost, int rocketWeight, int maxWeight) {
+    U1(int cost, int rocketWeight, int maxWeight) {
         super(cost, rocketWeight, maxWeight);
     }
 
     @Override
     public boolean launch(){
-        if(Math.random() < ((float)(5/100) * (float)(rocketWeight/maxWeight)))
+        if(Math.random() < (20*((float)rocketWeight/(float)maxWeight))/100) {
             return true;
+        }
         return false;
     }
 
     @Override
     public boolean land() {
-        if(Math.random() < ((float)(1/100) * (float)(rocketWeight/maxWeight)))
+        if(Math.random() < (20*((float)rocketWeight/(float)maxWeight))/100) {
             return true;
+        }
         return false;
     }
 }
 class U2 extends Rocket{
-    public U2(int cost, int rocketWeight, int maxWeight) {
+    U2(int cost, int rocketWeight, int maxWeight) {
         super(cost, rocketWeight, maxWeight);
     }
 
     @Override
     public boolean launch(){
-        if(Math.random() < ((float)(4/100) * (float)(rocketWeight/maxWeight)))
+        if(Math.random() < (20*((float)rocketWeight/(float)maxWeight))/100)
             return true;
         return false;
     }
 
     @Override
     public boolean land() {
-        if(Math.random() < ((float)(8/100) * (float)(rocketWeight/maxWeight)))
+        if(Math.random() < (20*((float)rocketWeight/(float)maxWeight))/100)
             return true;
         return false;
     }
 }
 class Simulation{
     String txtFile;
-
-    public Simulation(String s) {
+    Simulation(String s) {
         this.txtFile = s;
     }
     private ArrayList<Item> loadItems() throws Exception{
@@ -118,13 +128,14 @@ class Simulation{
     public int runSimulationU2(ArrayList<U2> rockets){
         int totalCost = 0;
         for(U2 rocket : rockets){
-            while(!crash(rocket)){
+            while(crash(rocket)){
                 totalCost += rocket.cost;
             }
             totalCost += rocket.cost;
         }
         return totalCost;
     }
+     
     private boolean crash(Rocket rocket){
         if((rocket.launch()) || (rocket.land())){
             return true;

@@ -2,7 +2,7 @@ public class Rocket implements SpaceShip {
     int cost;
     int rocketWeight;
     int maxWeight;
-    public Rocket(int cost, int rocketWeight, int maxWeight){
+    Rocket(int cost, int rocketWeight, int maxWeight){
         this.cost = cost;
         this.rocketWeight = rocketWeight;
         this.maxWeight = maxWeight;
@@ -20,7 +20,7 @@ public class Rocket implements SpaceShip {
 
     @Override
     public boolean canCarry(Item item) {
-        if (maxWeight - (rocketWeight + item.weight) > 0) {
+        if (rocketWeight + item.weight < maxWeight) {
             return true;
         }
         return false;
